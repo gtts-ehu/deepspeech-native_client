@@ -1,0 +1,14 @@
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu18.04
+
+ARG RELEASE=0.8.2
+ARG ARCH=amd64.cuda.linux
+ARG BASE_URL=https://github.com/mozilla/DeepSpeech/releases/download
+ARG TAR_FILE=native_client.${ARCH}.tar.xz
+ARG URL=${BASE_URL}/v${RELEASE}/${TAR_FILE}
+
+RUN apt-get update && \
+    apt-get install -y wget xz-utils libgomp1 && \
+    mkdir /native_client && \
+	wget -qO - ${URL} | tar xJf - -C /native_client 
+
+ENV PATH "$PATH:/native_client"

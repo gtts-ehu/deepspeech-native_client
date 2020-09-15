@@ -1,0 +1,14 @@
+FROM ubuntu:18.04
+
+ARG RELEASE=0.7.1
+ARG ARCH=amd64.cpu.linux
+ARG BASE_URL=https://github.com/mozilla/DeepSpeech/releases/download
+ARG TAR_FILE=native_client.${ARCH}.tar.xz
+ARG URL=${BASE_URL}/v${RELEASE}/${TAR_FILE}
+
+RUN apt-get update && \
+    apt-get install -y wget xz-utils libgomp1 && \
+    mkdir /native_client && \
+	wget -qO - ${URL} | tar xJf - -C /native_client 
+
+ENV PATH "$PATH:/native_client"
